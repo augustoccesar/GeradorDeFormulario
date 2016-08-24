@@ -1,0 +1,11 @@
+{
+  "nome": "Formulario Teste",
+  "descricao": "Primeiro formulario para testes do gerador",
+  "atributos": [
+    {
+      "nome": "",
+      "descricao": "",
+      "tipo": 1
+    }
+  ]
+}

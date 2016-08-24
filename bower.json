@@ -1,0 +1,24 @@
+{
+  "name": "GeradorDeFormulario",
+  "homepage": "https://github.com/augustoccesar/GeradorDeFormulario",
+  "authors": [
+    "augustoccesar <augusto.acfs@gmail.com>"
+  ],
+  "description": "",
+  "main": "",
+  "moduleType": [
+    "amd"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "*"
+  }
+}
