@@ -19,6 +19,7 @@
     "tests"
   ],
   "dependencies": {
-    "jquery": "*"
+    "jquery": "*",
+    "bootstrap": "*"
   }
 }

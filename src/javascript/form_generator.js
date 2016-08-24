@@ -1,9 +1,14 @@
 var FormGenerator = {
     parentComponentId: "dynamic-form-holder",
     formJson: undefined,
+    action: "",
 
     setParentComponentId: function (parentComponent) {
         FormGenerator.parentComponentId = parentComponent;
+    },
+
+    setFormAction: function (action) {
+        FormGenerator.action = action;
     },
 
     loadFormJson: function (sourceLocationURL) {
@@ -16,7 +21,17 @@ var FormGenerator = {
                 {
                     "nome": "Nome",
                     "descricao": "Nome do Docente",
+                    "tipo": 2
+                },
+                {
+                    "nome": "Idade",
+                    "descricao": "Idade do Docente",
                     "tipo": 1
+                },
+                {
+                    "nome": "Ativo",
+                    "descricao": "O docente está com situação ativa?",
+                    "tipo": 0
                 }
             ]
         }
@@ -32,28 +47,51 @@ var FormGenerator = {
             )
             .append(
                 $("<h5>").append(json.descricao)
-            ).append(
-                $("<form>")
             );
 
-        for(var i in json.atributos){
-            alert(i);
+        var form = $("<form>").attr('action', FormGenerator.action);
+        for (var i in json.atributos) {
+            switch (json.atributos[i].tipo) {
+                case 0:
+                    form
+                        .append(
+                            $("<label>").html(json.atributos[i].nome + ": ")
+                        )
+                        .append(
+                            $("<input>")
+                                .attr("type", "radio")
+                                .attr("name", json.atributos[i].nome.toLowerCase())
+                                .val(1)
+                        )
+                        .append("Sim")
+                        .append(
+                            $("<input>")
+                                .attr("type", "radio")
+                                .attr("name", json.atributos[i].nome.toLowerCase())
+                                .val(0)
+                        )
+                        .append("Nao");
+                    break;
+                case 1:
+                    form
+                        .append(
+                            $("<label>").html(json.atributos[i].nome + ": ")
+                        )
+                        .append(
+                            $("<input>").attr("type", "number")
+                        );
+                    break;
+                case 2:
+                    form
+                        .append(
+                            $("<label>").html(json.atributos[i].nome + ": ")
+                        )
+                        .append(
+                            $("<input>").attr("type", "text")
+                        );
+                    break;
+            }
         }
-
-        // TODO Load data into parent component
-    },
-
-    getTypeById: function (id) {
-        switch (id) {
-            case 0:
-                return {id: 0, name: "LOGICO"};
-                break;
-            case 1:
-                return {id: 1, name: "REAL"};
-                break;
-            case 2:
-                return {id: 2, name: "STRING"};
-                break;
-        }
+        parentComponent.append(form);
     }
 };
