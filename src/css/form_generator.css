@@ -1,0 +1,30 @@
+.form-holder {
+    background-color: lightgray;
+}
+
+.form-title {
+    color: black;
+}
+
+.form-subtitle {
+    color: black;
+}
+
+.form-input-label {
+
+}
+
+.form-input {
+    margin-bottom: 5px;
+}
+
+.form-text {
+    width: 300px;
+}
+
+.form-submit-button {
+    width: 100px;
+    height: 25px;
+    background-color: deepskyblue;
+}
+

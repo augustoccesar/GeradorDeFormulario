@@ -1,97 +1,123 @@
-var FormGenerator = {
-    parentComponentId: "dynamic-form-holder",
-    formJson: undefined,
-    action: "",
+var Form = (function(){
+    'use strict';
 
-    setParentComponentId: function (parentComponent) {
-        FormGenerator.parentComponentId = parentComponent;
-    },
+    function Generator() {
+        var self = this;
 
-    setFormAction: function (action) {
-        FormGenerator.action = action;
-    },
+        // Variables
 
-    loadFormJson: function (sourceLocationURL) {
-        // TODO Load into formJson the json to build the form
-        // For tests:
-        FormGenerator.formJson = {
-            "nome": "Formulario Teste",
-            "descricao": "Primeiro formulario para testes do gerador",
-            "atributos": [
-                {
-                    "nome": "Nome",
-                    "descricao": "Nome do Docente",
-                    "tipo": 2
-                },
-                {
-                    "nome": "Idade",
-                    "descricao": "Idade do Docente",
-                    "tipo": 1
-                },
-                {
-                    "nome": "Ativo",
-                    "descricao": "O docente está com situação ativa?",
-                    "tipo": 0
+        self.parentComponentId = "dynamic-form-holder";
+        self.formJson = undefined;
+        self.action = "";
+        self.method = "POST";
+
+        // Methods Definitions
+
+        self.setParentComponentId = setParentComponentId;
+        self.setFormAction = setFormAction;
+        self.loadForm = loadForm;
+        self.setFormJson = setFormJson;
+        self.setMethod = setMethod;
+
+        // Methods Construction
+
+        function setParentComponentId(parentComponentId) {
+            self.parentComponentId = parentComponentId;
+        }
+
+        function setFormAction(action) {
+            self.action = action;
+        }
+
+        function setFormJson(json) {
+            self.formJson = json;
+        }
+
+        function setMethod(method) {
+            self.method = method;
+        }
+
+        function loadForm(componentId, action, formJson) {
+            self.setParentComponentId(componentId);
+            self.setFormAction(action);
+            self.setFormJson(formJson);
+
+            var parentComponent = $("#" + self.parentComponentId);
+            var json = self.formJson;
+
+            parentComponent.addClass("form-holder");
+
+            parentComponent
+                .append(
+                    $("<h2>").addClass("form-title").append(json.nome)
+                )
+                .append(
+                    $("<h4>").addClass("form-subtitle").append(json.descricao)
+                );
+
+            parentComponent.append($("<hr>"));
+
+            var form = $("<form>").attr('action', self.action).attr("method", self.method);
+            for (var i in json.atributos) {
+                switch (json.atributos[i].tipo) {
+                    case 0:
+                        form
+                            .append(
+                                $("<label>").addClass("form-input-label")
+                                    .html(json.atributos[i].nome + ": ")
+                            )
+                            .append(
+                                $("<input>").addClass("form-input")
+                                    .attr("type", "radio")
+                                    .attr("name", json.atributos[i].nome.toLowerCase())
+                                    .val(1)
+                            )
+                            .append("Verdadeiro")
+                            .append(
+                                $("<input>").addClass("form-input")
+                                    .attr("type", "radio")
+                                    .attr("name", json.atributos[i].nome.toLowerCase())
+                                    .val(0)
+                            )
+                            .append("Falso")
+                            .append($("<br>"));
+                        break;
+                    case 1:
+                        form
+                            .append(
+                                $("<label>").addClass("form-input-label")
+                                    .html(json.atributos[i].nome + ": ")
+                            )
+                            .append(
+                                $("<input>").addClass("form-input form-text")
+                                    .attr("type", "number")
+                            ).append($("<br>"));
+                        break;
+                    case 2:
+                        form
+                            .append(
+                                $("<label>").addClass("form-input-label")
+                                    .html(json.atributos[i].nome + ": ")
+                            )
+                            .append(
+                                $("<input>").addClass("form-input form-text")
+                                    .attr("type", "text")
+                            ).append($("<br>"));
+                        break;
                 }
-            ]
-        }
-    },
-
-    loadForm: function () {
-        var parentComponent = $("#" + FormGenerator.parentComponentId);
-        var json = FormGenerator.formJson;
-
-        parentComponent
-            .append(
-                $("<h3>").append(json.nome)
-            )
-            .append(
-                $("<h5>").append(json.descricao)
-            );
-
-        var form = $("<form>").attr('action', FormGenerator.action);
-        for (var i in json.atributos) {
-            switch (json.atributos[i].tipo) {
-                case 0:
-                    form
-                        .append(
-                            $("<label>").html(json.atributos[i].nome + ": ")
-                        )
-                        .append(
-                            $("<input>")
-                                .attr("type", "radio")
-                                .attr("name", json.atributos[i].nome.toLowerCase())
-                                .val(1)
-                        )
-                        .append("Sim")
-                        .append(
-                            $("<input>")
-                                .attr("type", "radio")
-                                .attr("name", json.atributos[i].nome.toLowerCase())
-                                .val(0)
-                        )
-                        .append("Nao");
-                    break;
-                case 1:
-                    form
-                        .append(
-                            $("<label>").html(json.atributos[i].nome + ": ")
-                        )
-                        .append(
-                            $("<input>").attr("type", "number")
-                        );
-                    break;
-                case 2:
-                    form
-                        .append(
-                            $("<label>").html(json.atributos[i].nome + ": ")
-                        )
-                        .append(
-                            $("<input>").attr("type", "text")
-                        );
-                    break;
             }
+            parentComponent.append(form);
+
+            parentComponent.append(
+                $("<button>").addClass("form-submit-button")
+                    .attr("type", "submit")
+                    .html("Enviar")
+            )
         }
-        parentComponent.append(form);
     }
-};
+
+    return {
+        Generator : Generator
+    }
+
+}());
