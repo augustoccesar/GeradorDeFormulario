@@ -18,6 +18,7 @@ var Form = (function(){
         self.loadForm = loadForm;
         self.setFormJson = setFormJson;
         self.setMethod = setMethod;
+        self.build = build;
 
         // Methods Construction
 
@@ -37,11 +38,7 @@ var Form = (function(){
             self.method = method;
         }
 
-        function loadForm(componentId, action, formJson) {
-            self.setParentComponentId(componentId);
-            self.setFormAction(action);
-            self.setFormJson(formJson);
-
+        function build() {
             var parentComponent = $("#" + self.parentComponentId);
             var json = self.formJson;
 
@@ -113,6 +110,14 @@ var Form = (function(){
                     .attr("type", "submit")
                     .html("Enviar")
             )
+        }
+
+        function loadForm(componentId, action, formJson) {
+            self.setParentComponentId(componentId);
+            self.setFormAction(action);
+            self.setFormJson(formJson);
+
+            self.build()
         }
     }
 
